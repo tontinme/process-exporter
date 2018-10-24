@@ -1,0 +1,17 @@
+process_names:
+  - comm:
+    - ceph-osd
+    - ceph-mon
+    - ceph-mgr
+    - radosgw
+    - node_exporter
+    - prometheus
+    - iscsi-proxy
+    - iscsi-gateway
+  - exe: 
+    - /usr/bin/ganesha.nfsd
+  - name: ceph-rest-api
+    exec:
+    - python
+    cmdline:
+    - /bin/ceph-rest-api\s.*

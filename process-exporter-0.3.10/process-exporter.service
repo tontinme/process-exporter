@@ -1,0 +1,11 @@
+[Unit]
+Description=Process Exporter
+ 
+[Service]
+User=root
+WorkingDirectory=/var/lib/process-exporter/
+ExecStart=/usr/bin/process-exporter -config.path /etc/process-exporter/process.yml
+Restart=on-failure
+ 
+[Install]
+WantedBy=multi-user.target
