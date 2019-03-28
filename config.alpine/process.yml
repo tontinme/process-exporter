@@ -1,0 +1,53 @@
+process_names:
+  # comm is the second field of /proc/<pid>/stat minus parens.
+  # It is the base executable name, truncated at 15 chars.
+  # It cannot be modified by the program, unlike exe.
+  - comm:
+    - node_exporter
+    - prometheus
+    - nginx
+    - pacemakerd
+    - corosync
+
+  # exe is argv[0]. If no slashes, only basename of argv[0] need match.
+  # If exe contains slashes, argv[0] must match exactly.
+  - exe:
+    - /usr/bin/ganesha.nfsd
+
+  # cmdline is a list of regexps applied to argv.
+  # Each must match, and any captures are added to the .Matches map.
+  - name: ceph-rest-api
+    exe:
+    - python
+    cmdline:
+    - /bin/ceph-rest-api\s.*
+  - name: ceph-osd@{{.Matches.osdid}}
+    exe:
+    - /usr/bin/ceph-osd
+    cmdline:
+    - -f --cluster ceph --id\s+(?P<osdid>\S+) --setuser ceph --setgroup ceph
+  - name: ceph-mon@{{.Matches.monid}}
+    exe:
+    - /usr/bin/ceph-mon
+    cmdline:
+    - -f --cluster ceph --id\s+(?P<monid>\S+) --setuser ceph --setgroup ceph
+  - name: ceph-mgr@{{.Matches.mgrid}}
+    exe:
+    - /usr/bin/ceph-mgr
+    cmdline:
+    - -f --cluster ceph --id\s+(?P<mgrid>\S+) --setuser ceph --setgroup ceph
+  - name: ceph-radosgw@{{.Matches.rgwid}}
+    exe:
+    - /usr/bin/radosgw
+    cmdline:
+    - -f --cluster ceph --name client.(?P<rgwid>\S+) --setuser ceph --setgroup ceph
+  - name: iscsi-proxy
+    exe:
+    - /usr/bin/python
+    cmdline:
+    - /usr/bin/iscsi-proxy
+  - name: iscsi-gateway
+    exe:
+    - /usr/bin/python2
+    cmdline:
+    - -u /usr/bin/iscsi-gateway
