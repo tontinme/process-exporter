@@ -1,9 +1,9 @@
-FROM golang:1.10 AS build
-RUN curl -L -s https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 -o $GOPATH/bin/dep
-RUN chmod +x $GOPATH/bin/dep
+FROM golang:1.12 AS build
+#RUN curl -L -s https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 -o $GOPATH/bin/dep
+#RUN chmod +x $GOPATH/bin/dep
 WORKDIR /go/src/github.com/ncabatoff/process-exporter
 ADD . .
-RUN dep ensure
+#RUN dep ensure
 
 # Build the process-exporter command inside the container.
 RUN make 
